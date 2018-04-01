@@ -36,7 +36,7 @@ if not client.is_user_authorized():
 
 me = client.get_me()
 
-user_input_channel = input("enter entity")
+user_input_channel = input("enter entity(telegram URL or entity id):")
 
 if user_input_channel.isdigit():
     entity = PeerChannel(int(user_input_channel))
