@@ -1,5 +1,6 @@
 import configparser
 import json
+from datetime import date, datetime
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
@@ -7,6 +8,17 @@ from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.types import (
     PeerChannel
 )
+
+
+# some functions to parse json date
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+
+    return json.JSONEncoder.default(obj)
+
 
 # Reading Configs
 config = configparser.ConfigParser()
@@ -70,4 +82,4 @@ while True:
     total_messages = len(all_messages)
 
 with open('channel_messages.json', 'w') as outfile:
-    json.dump(all_messages, outfile)
+    json.dump(all_messages, outfile, default=json_serial)
