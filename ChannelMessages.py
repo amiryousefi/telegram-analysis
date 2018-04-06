@@ -1,29 +1,12 @@
 import configparser
 import json
+
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
+from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.types import (
-    Channel, ChannelForbidden, Chat, ChatEmpty, ChatForbidden, ChatFull,
-    ChatPhoto, InputPeerChannel, InputPeerChat, InputPeerUser, InputPeerEmpty,
-    MessageMediaDocument, MessageMediaPhoto, PeerChannel, InputChannel,
-    UserEmpty, InputUser, InputUserEmpty, InputUserSelf, InputPeerSelf,
-    PeerChat, PeerUser, User, UserFull, UserProfilePhoto, Document,
-    MessageMediaContact, MessageMediaEmpty, MessageMediaGame, MessageMediaGeo,
-    MessageMediaUnsupported, MessageMediaVenue, InputMediaContact,
-    InputMediaDocument, InputMediaEmpty, InputMediaGame,
-    InputMediaGeoPoint, InputMediaPhoto, InputMediaVenue, InputDocument,
-    DocumentEmpty, InputDocumentEmpty, Message, GeoPoint, InputGeoPoint,
-    GeoPointEmpty, InputGeoPointEmpty, Photo, InputPhoto, PhotoEmpty,
-    InputPhotoEmpty, FileLocation, ChatPhotoEmpty, UserProfilePhotoEmpty,
-    FileLocationUnavailable, InputMediaUploadedDocument, ChannelFull,
-    InputMediaUploadedPhoto, DocumentAttributeFilename, photos,
-    TopPeer, InputNotifyPeer, Message
+    PeerChannel
 )
-
-from telethon.tl.types import Message
-from telethon.tl.functions.messages import (GetDialogsRequest, GetHistoryRequest, SendMediaRequest)
-from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.types import InputPeerEmpty
 
 # Reading Configs
 config = configparser.ConfigParser()
