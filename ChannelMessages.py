@@ -62,7 +62,7 @@ offset_id = 0
 limit = 100
 all_messages = []
 total_messages = 0
-total_count_limit = 100
+total_count_limit = 0
 
 while True:
     print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
@@ -83,7 +83,7 @@ while True:
         all_messages.append(message.to_dict())
     offset_id = messages[len(messages) - 1].id
     total_messages = len(all_messages)
-    if total_messages >= total_count_limit:
+    if total_count_limit != 0 and total_messages >= total_count_limit:
         break
 
 with open('channel_messages.json', 'w') as outfile:
