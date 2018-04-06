@@ -11,13 +11,12 @@ from telethon.tl.types import (
 
 
 # some functions to parse json date
-def json_serial(obj):
-    """JSON serializer for objects not serializable by default json code"""
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
 
-    if isinstance(obj, (datetime, date)):
-        return obj.isoformat()
-
-    return json.JSONEncoder.default(obj)
+        return json.JSONEncoder.default(self, o)
 
 
 # Reading Configs
@@ -85,4 +84,4 @@ while True:
         break
 
 with open('channel_messages.json', 'w') as outfile:
-    json.dump(all_messages, outfile, default=json_serial)
+    json.dump(all_messages, outfile, cls=DateTimeEncoder)
