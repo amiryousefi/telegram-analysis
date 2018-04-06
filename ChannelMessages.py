@@ -17,7 +17,7 @@ class DateTimeEncoder(json.JSONEncoder):
             return o.isoformat()
 
         if isinstance(o, bytes):
-            return o.decode("utf-8")
+            return list(o)
 
         return json.JSONEncoder.default(self, o)
 
