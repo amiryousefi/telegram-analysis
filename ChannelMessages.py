@@ -47,8 +47,10 @@ my_channel = client.get_entity(entity)
 offset_id = 0
 limit = 1000
 all_messages = []
+total_messages = 0
 
 while True:
+    print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
     history = client(GetHistoryRequest(
         peer=my_channel,
         offset_id=offset_id,
@@ -64,7 +66,8 @@ while True:
     messages = history.messages
     for message in messages:
         all_messages.append(message.to_dict())
-    offset_id = messages[len(messages)-1].id
+    offset_id = messages[len(messages) - 1].id
+    total_messages = len(all_messages)
 
 with open('channel_messages.json', 'w') as outfile:
     json.dump(all_messages, outfile)
