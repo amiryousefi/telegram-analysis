@@ -1,5 +1,6 @@
 import configparser
 import json
+import asyncio
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
@@ -24,46 +25,51 @@ username = config['Telegram']['username']
 
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
-client.start()
-print("Client Created")
-# Ensure you're authorized
-if not client.is_user_authorized():
-    client.send_code_request(phone)
-    try:
-        client.sign_in(phone, input('Enter the code: '))
-    except SessionPasswordNeededError:
-        client.sign_in(password=input('Password: '))
 
-me = client.get_me()
+async def main(phone):
+    await client.start()
+    print("Client Created")
+    # Ensure you're authorized
+    if await client.is_user_authorized() == False:
+        await client.send_code_request(phone)
+        try:
+            await client.sign_in(phone, input('Enter the code: '))
+        except SessionPasswordNeededError:
+            await client.sign_in(password=input('Password: '))
 
-user_input_channel = input("enter entity(telegram URL or entity id):")
+    me = await client.get_me()
 
-if user_input_channel.isdigit():
-    entity = PeerChannel(int(user_input_channel))
-else:
-    entity = user_input_channel
+    user_input_channel = input("enter entity(telegram URL or entity id):")
 
-my_channel = client.get_entity(entity)
+    if user_input_channel.isdigit():
+        entity = PeerChannel(int(user_input_channel))
+    else:
+        entity = user_input_channel
 
-offset = 0
-limit = 100
-all_participants = []
+    my_channel = await client.get_entity(entity)
 
-while True:
-    participants = client(GetParticipantsRequest(
-        my_channel, ChannelParticipantsSearch(''), offset, limit,
-        hash=0
-    ))
-    if not participants.users:
-        break
-    all_participants.extend(participants.users)
-    offset += len(participants.users)
+    offset = 0
+    limit = 100
+    all_participants = []
 
-all_user_details = []
-for participant in all_participants:
-    all_user_details.append(
-        {"id": participant.id, "first_name": participant.first_name, "last_name": participant.last_name,
-         "user": participant.username, "phone": participant.phone, "is_bot": participant.bot})
+    while True:
+        participants = await client(GetParticipantsRequest(
+            my_channel, ChannelParticipantsSearch(''), offset, limit,
+            hash=0
+        ))
+        if not participants.users:
+            break
+        all_participants.extend(participants.users)
+        offset += len(participants.users)
 
-with open('user_data.json', 'w') as outfile:
-    json.dump(all_user_details, outfile)
+    all_user_details = []
+    for participant in all_participants:
+        all_user_details.append(
+            {"id": participant.id, "first_name": participant.first_name, "last_name": participant.last_name,
+             "user": participant.username, "phone": participant.phone, "is_bot": participant.bot})
+
+    with open('user_data.json', 'w') as outfile:
+        json.dump(all_user_details, outfile)
+
+with client:
+    client.loop.run_until_complete(main(phone))
