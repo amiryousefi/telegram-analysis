@@ -5,9 +5,10 @@
 /nbproject/
 .idea/*
 
+venv
 .ipynb_checkpoints
 .projectignore
-amiryousefi_it.session
+*.session
 anaconda-project.yml
 *.json
 *.ipynb
