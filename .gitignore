@@ -5,6 +5,7 @@
 /nbproject/
 .idea/*
 
+venv
 .ipynb_checkpoints
 .projectignore
 amiryousefi_it.session
