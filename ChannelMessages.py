@@ -1,6 +1,5 @@
 import configparser
 import json
-import asyncio
 from datetime import date, datetime
 
 from telethon import TelegramClient
@@ -39,6 +38,7 @@ username = config['Telegram']['username']
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
 
+
 async def main(phone):
     await client.start()
     print("Client Created")
@@ -68,7 +68,8 @@ async def main(phone):
     total_count_limit = 0
 
     while True:
-        print("Current Offset ID is:", offset_id, "; Total Messages:", total_messages)
+        print("Current Offset ID is:", offset_id,
+              "; Total Messages:", total_messages)
         history = await client(GetHistoryRequest(
             peer=my_channel,
             offset_id=offset_id,
