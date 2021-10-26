@@ -1,6 +1,5 @@
 import configparser
 import json
-import asyncio
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
@@ -25,6 +24,7 @@ username = config['Telegram']['username']
 
 # Create the client and connect
 client = TelegramClient(username, api_id, api_hash)
+
 
 async def main(phone):
     await client.start()
